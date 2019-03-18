@@ -83,12 +83,12 @@
                         <div class="icon-item"></div>
                     </div>
                     <div class="item">
-                        <div class="menu-item">
+                        <a class="menu-item" href="student.html" onclick="getDates()">
                             <svg class="icon icon-fly"><use xlink:href="#icon-fly"></use></svg>
                             <div class="menu-text">
                                 Strategy
                             </div>
-                        </div>
+                        </a>
                     </div>
                     <div class="item">
                         <a class="menu-item" href="#team" onclick=getTasks()><svg class="icon icon-man"><use xlink:href="#icon-man" ></use></svg>
@@ -477,22 +477,22 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 	<script>
         let obj = [];
+
         async function getDates() {
-            await fetch(localStorage.getItem('baseurl')+'/get/schedules/5',{
+            await fetch(localStorage.getItem('baseurl')+'/get/schedules/'+localStorage.getItem('studentId'),{
                     headers: {
                         'Content-Type': 'application/json',
                         'X-Auth-Token': localStorage.getItem('token')
                     }
-				}
-                )
+				})
                 .then(r => r.json())
                 .then(json => {
                         datas = json
+                    console.log(datas)
                     }
                 );
             for(let data of datas){
                 obj.push({"date":data.date + " " + data.time, "title":"Event 1", "description":"desc", "url":""})
-                console.log(obj)
             }
         }
 
@@ -504,6 +504,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             });
 
         })
+
         window.onload = getDates();
 	</script>
 </body>

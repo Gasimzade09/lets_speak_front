@@ -1,8 +1,8 @@
 let tableBody = document.getElementById("table_body");
 let token;
 let studentId;
-let taskBody = document.getElementById("task_body");
-
+let taskBody = document.getElementById("eventCalendar");
+let file = document.getElementById("file").value;
 
 async function signUp() {
     let user;
@@ -41,11 +41,11 @@ async function signUp() {
     })
 }
 
-function signIn() {
+async function signIn() {
      username = document.getElementById("username").value;
      password = document.getElementById("password").value;
      localStorage.setItem('username', username)
-    fetch(baseUrl + "/auth", {
+     fetch(baseUrl + "/auth", {
         method: "PUT",
         headers: {
             'Content-Type': 'application/json'
@@ -118,5 +118,34 @@ async function getTasks(){
         console.log(task.name)
     }
 
+}
+
+$(document).ready(function() {
+    $("#upload-file-input").on("change", uploadFile);
+});
+
+/**
+ * Upload the file sending it via Ajax at the Spring Boot server.
+ */
+function uploadFile() {
+
+    $.ajax({
+        url: "http://localhost:8080/upload/3?file=hgf.jpg",
+        type: "POST",
+        data: new FormData($("#upload-file-form")[0]),
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        cache: false,
+
+        success: function () {
+            console.log(file)
+            console.log("success")
+        },
+        error: function () {
+            console.log(file)
+            console.log("Error")
+        }
+    });
 }
 
