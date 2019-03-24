@@ -8,6 +8,53 @@
 /*----------------------------------------*/
 /* Template default CSS
 /*----------------------------------------*/
+.multiselect {
+	width: 200px;
+}
+
+.selectBox {
+	position: relative;
+}
+
+.rows{
+	margin-left:75px;
+}
+
+.footer-bottom{
+	margin-left:75px;
+}
+
+.search-section{
+	margin-left:50px;
+}
+
+.selectBox select {
+	width: 100%;
+	font-weight: bold;
+}
+
+.overSelect {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+#checkboxes {
+	display: none;
+	border: 1px #dadada solid;
+}
+
+#checkboxes label {
+	display: block;
+}
+
+#checkboxes label:hover {
+	background-color: #1e90ff;
+}
+
+
 
 .modal {
 	display: none; /* Hidden by default */

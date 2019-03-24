@@ -44,7 +44,7 @@
 					</div>
 				</div>
 				<div class="col-lg-9 col-md-9">
-                    <button class="site-btn header-btn" id="login">Login or Sign up</button>
+					<div id="login"></div>
 					<nav class="main-menu">
 						<ul>
 							<li><a href="index.html">Home</a></li>
@@ -68,7 +68,7 @@
                 <div class="card">
                     <div class="card-header" id="headingOne">
                         <h2 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onclick="signIn()">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                 Sign in
                             </button>
                         </h2>
@@ -92,12 +92,7 @@
                                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                                     <label class="form-check-label" for="exampleCheck1">Check me out</label>
                                 </div>
-								<form id="upload-file-form">
-									<label for="file">Upload your file:</label>
-									<input id="file" type="file" name="uploadfile" accept="*" />
-									<button type="button" onclick=uploadFile()>Upload</button>
-								</form>
-                                <button type="submit" class="btn btn-primary" onclick=signIn()>Submit</button>
+                                <button type="button" class="btn btn-primary" onclick=signIn()>Submit</button>
                             </form>
                         </div>
                     </div>
@@ -119,7 +114,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="regPassword">Password</label>
-                                    <input type="password" class="form-control" id="regPassword" placeholder="Password">
+                                    <input type="password" class="form-control" id="regPassword" required placeholder="Password">
                                 </div>
                                 <div class="form-group">
                                     <label for="name">First name</label>
@@ -141,6 +136,59 @@
                                     <label for="birthDate">Birth date</label>
                                     <input type="date" class="form-control" id="birthDate" placeholder="Birth date">
                                 </div>
+								<div class="form-group">
+									<label for="fileUploadForm">File upload</label>
+									<input type="file" class="form-control" id="fileUploadForm">
+									<button type="submit" id="submitButton">send file</button>
+								</div>
+								<form>
+									<div class="multiselect">
+										<div class="selectBox" onclick="showCheckboxes()">
+											<select>
+												<option>Select an option</option>
+											</select>
+											<div class="overSelect"></div>
+										</div>
+										<div id="checkboxes">
+											<label for="one">
+												<input type="checkbox" id="one" />MONDAY
+												<input type="time" id="mFromTime">
+												<input type="time" id="mToTime">
+											</label>
+											<label for="two">
+												<input type="checkbox" id="two" />TUESDAY
+												<input type="time" id="tFromTime">
+												<input type="time" id="tToTime">
+											</label>
+
+											<label for="three">
+												<input type="checkbox" id="three" value="3"/>WEDNESDAY
+												<input type="time" id="wFromTime">
+												<input type="time" id="wToTime">
+											</label>
+											<label for="four">
+												<input type="checkbox" id="four" />THURSDAY
+												<input type="time" id="thFromTime">
+												<input type="time" id="thToTime">
+											</label>
+											<label for="five">
+												<input type="checkbox" id="five" />FRIDAY
+												<input type="time" id="frFromTime">
+												<input type="time" id="frToTime">
+											</label>
+											<label for="six">
+												<input type="checkbox" id="six" value="off"/>SATURDAY
+												<input type="time" id="saFromTime">
+												<input type="time" id="saToTime">
+											</label>
+											<label for="seven">
+												<input type="checkbox" id="seven" />SUNDAY
+												<input type="time" id="sunFromTime">
+												<input type="time" id="sunToTime">
+											</label>
+										</div>
+									</div>
+								</form>
                                 <button type="button" class="btn btn-primary" onclick="signUp()">Submit</button>
                             </form>
                         </div>
@@ -501,6 +549,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 
 	<!--====== Javascripts & Jquery ======-->
+	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/mixitup.min.js"></script>
@@ -508,115 +557,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="js/owl.carousel.min.js"></script>
 	<script src="js/main.js"></script>
 	<script src="js/custom.js"></script>
-	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-	<script src="js/fileUpload.js"></script>
-<script>
+	<script src="js/index.js"></script>
 
-    $(document).ready(function() {
-
-        $("#submitButton").click(function(event) {
-
-            // Stop default form Submit.
-            event.preventDefault();
-
-            // Call Ajax Submit.
-
-            ajaxSubmitForm();
-
-        });
-
-    });
-
-    function ajaxSubmitForm() {
-
-        // Get form
-        var form = $('#fileUploadForm')[0];
-
-        var data = new FormData(form);
-
-
-        $("#submitButton").prop("disabled", true);
-
-        $.ajax({
-            type: "POST",
-            enctype: 'multipart/form-data',
-            url: 'http://localhost:8080/api/upload',
-            data: data,
-
-            // prevent jQuery from automatically transforming the data into a query string
-            processData: false,
-            contentType: false,
-            cache: false,
-            timeout: 1000000,
-            success: function(data, textStatus, jqXHR) {
-
-                $("#result").html(data);
-                console.log("SUCCESS : ", data);
-                $("#submitButton").prop("disabled", false);
-                $('#fileUploadForm')[0].reset();
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-
-                $("#result").html(jqXHR.responseText);
-                console.log("ERROR : ", jqXHR.responseText);
-                $("#submitButton").prop("disabled", false);
-
-            }
-        });
-
-    }
-
-
-    var baseUrl = 'http://localhost:8080/api';
-
-    var modal = document.getElementById('myModal');
-
-    // Get the button that opens the modal
-    var btn = document.getElementById("login");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks on the button, open the modal
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-
-    async function getPost(){
-        let courseArray = {};
-        localStorage.setItem('baseurl', baseUrl)
-        await fetch(baseUrl+'/courses/get')
-            .then(r => r.json())
-            .then(json => {
-                    courseArray = json
-                }
-            );
-        for(let course of courseArray){
-            tableBody.innerHTML+='<div class="col-lg-4 col-md-6">\n' +
-                '                    <div class="categorie-item">\n' +
-                '                    <div class="ci-thumb set-bg" data-setbg="img/categories/1.jpg"></div>\n' +
-                '                    <div class="ci-text">\n' +
-                '                    <h5>'+course.courseName+'</h5>\n' +
-                '                    <p>'+course.description+'</p>\n' +
-                '                    </div>\n' +
-                '                    </div>\n' +
-                '                    </div>';
-        }
-    };
-    window.onload = getPost();
-
-</script>
 </body>
 </html>
