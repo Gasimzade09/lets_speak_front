@@ -5,7 +5,7 @@ document.getElementById("items-li").onclick = async function () {
         await fetch(localStorage.getItem('baseurl')+'/student/get/'+localStorage.getItem('studentId'),{
             headers: {
                 'Content-Type': 'application/json',
-                'X-Auth-Token': token
+                'X-Auth-Token': localStorage.getItem('token')
             }
         })
             .then(r => r.json())
@@ -22,7 +22,7 @@ document.getElementById("items-li").onclick = async function () {
             '                    <h5>Skype: '+student.skype+'</h5>\n' +
             '                    <h5>Phone number: '+student.phoneNumber+'</h5>\n' +
             '                    <h5>Rank: '+student.rank+'</h5>\n' +
-            '                    <img src="http://localhost:8080'+student.photo+'>' +
+            '                    <h5>Teacher name: '+student.teacherName+'</h5>\n'+
             '                    </div>\n' +
             '                    </div>\n' +
             '                    </div>';

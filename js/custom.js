@@ -1,11 +1,13 @@
 let taskBody = document.getElementById("eventCalendar");
+var studentId;
 async function getStudentId() {
     token = localStorage.getItem('token')
+    console.log(token)
     username = localStorage.getItem('username')
-	var newUser = username.split('@').join('%40');
-    console.log(newUser)
+	//var newUser = username.split('@').join('%40');
+    console.log(username)
     baseUrl = await localStorage.getItem('baseurl')
-    fetch(baseUrl + "/get/id?email="+newUser, {
+    await fetch(baseUrl + "/get/id?email="+username, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
@@ -16,20 +18,23 @@ async function getStudentId() {
             .then(function (data) {
                 studentId = data
                 localStorage.setItem('studentId', studentId)
+                localStorage.getItem('studentId')
             })
-        console.log(studentId)
-
+        localStorage.setItem('studentId', studentId)
+        console.log("student id: " + localStorage.getItem('studentId'))
 
     })
-    console.log(localStorage.getItem('studentId'))
+    console.log("studentId: " + studentId)
+    console.log("localStorage: " + localStorage.getItem('studentId'))
+
 }
 
 async function getTasks(){
-    if(localStorage.getItem('token')!=undefined){
+    if(localStorage.getItem('token')!==undefined){
         let tasks =[];
         studentId = localStorage.getItem('studentId')
         console.log(studentId)
-        await fetch(localStorage.getItem('baseurl') + '/tasks/get/'+studentId,{
+        await fetch(localStorage.getItem('baseurl') + '/tasks/get/'+localStorage.getItem('studentId'),{
             headers:{
                 'Content-Type': 'application/json',
                 'X-Auth-Token': localStorage.getItem('token')
@@ -42,20 +47,20 @@ async function getTasks(){
                 console.log(tasks)
             })
         taskBody.innerHTML = "";
+        taskBody.innerHTML +=  '<div class="col-lg-4 col-md-6">\n' +
+                        '<div class="categorie-item">\n' +
+                        '<div class="ci-thumb set-bg" data-setbg="img/categories/1.jpg"></div>';
+
         for(let task of tasks){
-
-            taskBody.innerHTML+='<div class="col-lg-4 col-md-6">\n' +
-                '                    <div class="categorie-item">\n' +
-                '                    <div class="ci-thumb set-bg" data-setbg="img/categories/1.jpg"></div>\n' +
-                '                    <div class="ci-text">\n' +
-                '                    <h5>'+task.name+'</h5>\n' +
-                '                    <a>'+task.url+'</a>\n' +
-                '                    </div>\n' +
-                '                    </div>\n' +
-                '                    </div>';
-
+            taskBody.innerHTML += '<div class="ci-text">\n'+
+                                 '<h5>'+task.name+'</h5>\n' +
+                                 '<a>'+task.url+'</a>\n' +
+                                 '</div>';
             console.log(task.name)
         }
+        taskBody.innerHTML += '</div>\n' +
+                    '</div>';
+
     }
 
 }

@@ -1,16 +1,50 @@
+
 var expanded = false;
 var token;
-var studentId;
+
 let tableBody = document.getElementById("table_body");
 let Login = document.getElementById("login");
 // let showLogout = document.getElementById("show-logout");
+
+async function signIn() {
+    username = document.getElementById("username").value;
+    password = document.getElementById("password").value;
+    await fetch(baseUrl + "/auth", {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password
+        })
+    }).then(function (response) {
+        response.json()
+            .then(function (_data) {
+                token = _data.token;
+                localStorage.setItem('username', username)
+                console.log("tok: " + token)
+                localStorage.setItem('token', token)
+                token = localStorage.getItem('token')
+            }).then(function () {
+            fetch(baseUrl + "/set/user/token/"+username+"/"+token,{
+                method: "POST"
+            })
+        });
+    })
+    //logoutButton()
+    console.log("token: " + token + " username:  " + localStorage.getItem('username'))
+}
+
 
 async function getCourseList() {
     let courseArray = {};
     //token = localStorage.getItem('token');
     //localStorage.setItem('baseurl', baseUrl)
-    console.log(localStorage.getItem('baseurl'))
-    console.log("get post " + token)
+    console.log(localStorage.getItem('baseurl'));
+    console.log("get post " + token);
+    console.log(localStorage.getItem('token'));
+    console.log(localStorage.getItem('username'))
     await fetch('http://localhost:8080/api/courses/get')
         .then(r => r.json())
         .then(json => {
@@ -20,7 +54,7 @@ async function getCourseList() {
     for (let course of courseArray) {
         tableBody.innerHTML += '<div class="col-lg-4 col-md-6">\n' +
             '                    <div class="categorie-item">\n' +
-            '                    <div class="ci-thumb set-bg" data-setbg="img/categories/1.jpg"></div>\n' +
+            '                    <div class="ci-thumb set-bg"><img src="img/categories/1.jpg"></div>\n' +
             '                    <div class="ci-text">\n' +
             '                    <h5>' + course.courseName + '</h5>\n' +
             '                    <p>' + course.description + '</p>\n' +
@@ -84,7 +118,7 @@ function ajaxSubmitForm() {
 function loginButton() {
     console.log(token);
     Login.innerHTML = "";
-    Login.innerHTML = '<button class="site-btn header-btn" id="login">Login or Sign up</button>';
+    Login.innerHTML = '<button class="site-btn header-btn" id="login" >Login or Sign up</button>';
     document.getElementById("login").onclick = function () {
         modal.style.display = "block";
     }
@@ -92,29 +126,47 @@ function loginButton() {
 
 function logoutButton() {
     Login.innerHTML = "";
-    Login.innerHTML = '<button class="site-btn header-btn" id="logout">Logout</button>';
-    document.getElementById("login").onclick = $.ajax({
-        url: 'http://localhost:8080/logout',
-        datatype : "application/json",
-        contentType: "text/plain",
-        success: function(){
-            loginButton();
-        }
-    });
-    // document.getElementById("logout").onclick = loginButton();
+    Login.innerHTML = '<a href="index.html"><button class="site-btn header-btn" id="logout" onclick="deleteToken()">Logout</button></a>';
+
+    // noinspection JSAnnotator
+    //document.getElementById("logout").onclick = logOut();
 }
 
-function onloadWindow(){
-    if (token == null)
+async function deleteToken(){
+    token = null;
+    localStorage.clear();
+}
+
+async function logOut() {
+    await fetch('http://localhost:8080/api/logout',{
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Auth-Token': token
+        },
+        body: JSON.stringify({
+            token: token
+        })
+    }).then(function (response) {
+        response.json()
+            .then(function (_data) {
+                token = _data;
+            })
+    })
+}
+
+function onLoadWindow(){
+    if (localStorage.getItem('token') == null){
+        console.log("null")
         loginButton();
-    else
+    }else
         logoutButton();
 }
 
 window.onload = getCourseList();
-window.onload = onloadWindow();
+window.onload = onLoadWindow();
 
-var baseUrl = 'http://localhost:8080/api';
+
 localStorage.setItem('baseurl', baseUrl)
 var modal = document.getElementById('myModal');
 
@@ -187,29 +239,5 @@ async function signUp() {
     })
 }
 
-async function signIn() {
-    username = document.getElementById("username").value;
-    password = document.getElementById("password").value;
-    await fetch(baseUrl + "/auth", {
-        method: "PUT",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            username: username,
-            password: password
-        })
-    }).then(function (response) {
-        response.json()
-            .then(function (_data) {
-                token = _data.token;
-                localStorage.setItem('username', username)
-                console.log("tok: " + token)
-                localStorage.setItem('token', token)
-                token = localStorage.getItem('token')
-            })
-    })
-    logoutButton()
-    console.log("token: " + token + " username:  " + localStorage.getItem('username'))
-}
+
 

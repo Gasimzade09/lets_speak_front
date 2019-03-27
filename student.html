@@ -51,7 +51,7 @@
 					</div>
 				</div>
 				<div class="col-lg-9 col-md-9">
-					<a href="" class="site-btn header-btn">Login</a>
+
 					<nav class="main-menu">
 						<ul>
 							<li><a href="index.html">Home</a></li>
@@ -347,7 +347,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script>
         let obj = [];
         let student;
-
         async function getDates() {
             token = localStorage.getItem('token')
             await fetch(localStorage.getItem('baseurl')+'/get/schedules/'+localStorage.getItem('studentId'),{
@@ -362,9 +361,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                         datas = json;
                     }
                 );
-            for(let data of datas){
-                obj.push({"date":data.date + " " + data.time, "title":"Event 1", "description":"desc", "url":""})
+            for(var data of datas){
+                obj.push({"date":data.date + " " + data.time, "title":data.teacherName, "description":"desc", "url":""})
             }
+            console.log(data.date);
         }
 
         $(function () {
@@ -376,10 +376,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
         })
 
-        if(localStorage.getItem('token') !== undefined && localStorage.getItem('token') !== null){
+        //if(localStorage.getItem('token') !== undefined && localStorage.getItem('token') !== null){
             window.onload = getStudentId();
             window.onload = getDates();
-        }
+        //}
 
 
 	</script>
