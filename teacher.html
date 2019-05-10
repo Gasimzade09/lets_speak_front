@@ -6,9 +6,11 @@
 	<meta name="description" content="WebUni Education Template">
 	<meta name="keywords" content="webuni, education, creative, html">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:url" content="http://lipis.github.io/bootstrap-sweetalert/" />
+    <meta property="og:image" content="http://lipis.github.io/bootstrap-social/assets/bootstrap-sweetalert.png" />
 	<!-- Favicon -->   
 	<link href="img/favicon.ico" rel="shortcut icon"/>
-
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 	<!-- Google Fonts -->
 	<link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,500,500i,600,600i,700,700i,800,800i" rel="stylesheet">
 
@@ -22,10 +24,27 @@
 	<link rel="stylesheet" href="css/eventCalendar_theme_responsive.css"/>
 
 
+
 	<!--[if lt IE 9]>
 	  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<![endif]-->
+    <style type="text/css">
+        input.hidden {
+            position: absolute;
+            left: -9999px;
+        }
+
+        #profile-image1 {
+            cursor: pointer;
+            width: 100px;
+            height: 100px;
+            border:2px solid #03b1ce ;
+        }
+        .tital{ font-size:16px; font-weight:500; float: left;}
+        .bot-border{ border-bottom:1px #f8f8f8 solid;  margin:5px 0  5px 0;}
+    </style>
 
 </head>
 <body>
@@ -41,13 +60,16 @@
 			<div class="row">
 				<div class="col-lg-3 col-md-3">
 					<div class="site-logo">
-						<img src="img/logo.png" alt="">
+						<img class="logotype" src="img/logo.png" alt="">
 					</div>
 					<div class="nav-switch">
 						<i class="fa fa-bars"></i>
 					</div>
 				</div>
 				<div class="col-lg-9 col-md-9">
+                    <div id="login">
+
+                    </div>
 					<!--<a href="" class="site-btn header-btn">Login</a>-->
 					<nav class="main-menu">
 						<ul>
@@ -86,26 +108,26 @@
                         <a class="menu-item" href="teacher.html" onclick="getDates()">
                             <svg class="icon icon-fly"><use xlink:href="#icon-fly"></use></svg>
                             <div class="menu-text">
-                                Strategy
+                                Schedule
                             </div>
                         </a>
                     </div>
                     <div class="item">
-                        <a class="menu-item" href="#team" onclick=getStudenList()><svg class="icon icon-man"><use xlink:href="#icon-man" ></use></svg>
+                        <a class="menu-item" href="#team" onclick=profile()><svg class="icon icon-man"><use xlink:href="#icon-man" ></use></svg>
                             <div class="menu-text">
-                                Team
+                                Profile
                             </div>
                         </a>
                     </div>
                     <div class="item">
-                        <div class="menu-item">
+                        <a class="menu-item" href="#students" onclick="getStudentList()">
                             <svg class="icon icon-info"><use xlink:href="#icon-info"></use></svg>
                             <div class="menu-text">
-                                About
+                                Student list
                             </div>
-                        </div>
+                        </a>
                     </div>
-                    <div class="item">
+                    <!--<div class="item">
                         <a class="menu-item" href="#info" onclick=getStudent()>
                             <svg class="icon icon-star"><use xlink:href="#icon-star"></use></svg>
                             <div class="menu-text">
@@ -128,7 +150,7 @@
                                 Info
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
@@ -208,7 +230,8 @@
                 <path id="Logo_copy" data-name="Logo copy" class="cls-1" d="M1750,949V916h59V880l87,0v100H1705V949h45Z" transform="translate(-1703.5 -878.5)"></path></symbol>
 
             <symbol id="icon-share" viewBox="0 0 17 26">
-                <path id="share" class="cls-1" d="M4094,349.005a4.006,4.006,0,1,1,4.01-4.006A4.013,4.013,0,0,1,4094,349.005Zm0-6.123a2.117,2.117,0,1,0,2.08,2.117A2.106,2.106,0,0,0,4094,342.882Zm9-2.87a4.006,4.006,0,1,1,4.01-4.006A4.013,4.013,0,0,1,4103,340.012Zm0-6.123a2.118,2.118,0,1,0,2.07,2.117A2.1,2.1,0,0,0,4103,333.889ZM4103,358a4.006,4.006,0,1,1,4.01-4.006A4.013,4.013,0,0,1,4103,358Zm0-6.123a2.118,2.118,0,1,0,2.07,2.117A2.1,2.1,0,0,0,4103,351.877Zm-6.05-8.426-1.44-1.4,4.13-4.221,1.45,1.394Zm2.65,8.761-4.09-4.178,1.44-1.393,4.09,4.177Z" transform="translate(-4090 -332)"></path></symbol>
+                <path id="share" class="cls-1" d="M4094,349.005a4.006,4.006,0,1,1,4.01-4.006A4.013,4.013,0,0,1,4094,349.005Zm0-6.123a2.117,2.117,0,1,0,2.08,2.117A2.106,2.106,0,0,0,4094,342.882Zm9-2.87a4.006,4.006,0,1,1,4.01-4.006A4.013,4.013,0,0,1,4103,340.012Zm0-6.123a2.118,2.118,0,1,0,2.07,2.117A2.1,2.1,0,0,0,4103,333.889ZM4103,358a4.006,4.006,0,1,1,4.01-4.006A4.013,4.013,0,0,1,4103,358Zm0-6.123a2.118,2.118,0,1,0,2.07,2.117A2.1,2.1,0,0,0,4103,351.877Zm-6.05-8.426-1.44-1.4,4.13-4.221,1.45,1.394Zm2.65,8.761-4.09-4.178,1.44-1.393,4.09,4.177Z" transform="translate(-4090 -332)"></path>
+			</symbol>
 
             <filter id="goo">
                 <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"></feGaussianBlur>
@@ -230,9 +253,9 @@
 
 	<!-- search section -->
 	<section class="search-section ss-other-page">
-		<div class="container">
+		<div class="container" id="profile">
 			<div id="eventCalendar">
-				
+
 			</div>
             <div class="row" id="task_body">
 
@@ -250,154 +273,23 @@
 
 	<!-- Page  -->
 
-	<section class="blog-page spad pb-0">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-9">
-					<!-- blog post -->
-					<div class="blog-post">
-						<img src="img/blog/1.jpg" alt="">
-						<h3>How to create the perfect resume</h3>
-						<div class="blog-metas">
-							<div class="blog-meta author">
-								<div class="post-author set-bg" data-setbg="img/authors/1.jpg"></div>
-								<a href="#">James Smith</a>
-							</div>
-							<div class="blog-meta">
-								<a href="#">Development</a>
-							</div>
-							<div class="blog-meta">
-								<a href="#">June 12, 2018</a>
-							</div>
-							<div class="blog-meta">
-								<a href="#">2 Comments</a>
-							</div>
-						</div>
-						<p>Lorem ipsum dolor sit amet, consectetur. Phasellus sollicitudin et nunc eu efficitur. Sed ligula nulla, molestie quis ligula in, eleifend rhoncus ipsum. Donec ultrices, sem vel efficitur molestie, massa nisl posuere ipsum, ut vulputate mauris ligula a metus. Aenean vel congue diam, sed bibendum ipsum. Nunc vulputate aliquet tristique. Integer et pellentesque urna. </p>
-						<a href="#" class="site-btn readmore">Read More</a>
-					</div>
-					<!-- blog post -->
-					<div class="blog-post">
-						<img src="img/blog/2.jpg" alt="">
-						<h3>5 Tips to make money from home</h3>
-						<div class="blog-metas">
-							<div class="blog-meta author">
-								<div class="post-author set-bg" data-setbg="img/authors/2.jpg"></div>
-								<a href="#">James Smith</a>
-							</div>
-							<div class="blog-meta">
-								<a href="#">Development</a>
-							</div>
-							<div class="blog-meta">
-								<a href="#">June 12, 2018</a>
-							</div>
-							<div class="blog-meta">
-								<a href="#">2 Comments</a>
-							</div>
-						</div>
-						<p>Lorem ipsum dolor sit amet, consectetur. Phasellus sollicitudin et nunc eu efficitur. Sed ligula nulla, molestie quis ligula in, eleifend rhoncus ipsum. Donec ultrices, sem vel efficitur molestie, massa nisl posuere ipsum, ut vulputate mauris ligula a metus. Aenean vel congue diam, sed bibendum ipsum. Nunc vulputate aliquet tristique. Integer et pellentesque urna. </p>
-						<a href="#" class="site-btn readmore">Read More</a>
-					</div>
-					<!-- blog post -->
-					<div class="blog-post">
-						<img src="img/blog/3.jpg" alt="">
-						<h3>Why choose an online course?</h3>
-						<div class="blog-metas">
-							<div class="blog-meta author">
-								<div class="post-author set-bg" data-setbg="img/authors/3.jpg"></div>
-								<a href="#">James Smith</a>
-							</div>
-							<div class="blog-meta">
-								<a href="#">Development</a>
-							</div>
-							<div class="blog-meta">
-								<a href="#">June 12, 2018</a>
-							</div>
-							<div class="blog-meta">
-								<a href="#">2 Comments</a>
-							</div>
-						</div>
-						<p>Lorem ipsum dolor sit amet, consectetur. Phasellus sollicitudin et nunc eu efficitur. Sed ligula nulla, molestie quis ligula in, eleifend rhoncus ipsum. Donec ultrices, sem vel efficitur molestie, massa nisl posuere ipsum, ut vulputate mauris ligula a metus. Aenean vel congue diam, sed bibendum ipsum. Nunc vulputate aliquet tristique. Integer et pellentesque urna. </p>
-						<a href="#" class="site-btn readmore">Read More</a>
-					</div>
-					<div class="site-pagination">
-						<span class="active">01.</span>
-						<a href="#">02.</a>
-						<a href="#">03</a>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-5 col-sm-9 sidebar">
-					<div class="sb-widget-item">
-						<form class="search-widget">
-							<input type="text" placeholder="Search">
-							<button><i class="fa fa-search"></i></button>
-						</form>
-					</div>
-					<div class="sb-widget-item">
-						<h4 class="sb-w-title">Categories</h4>
-						<ul>
-							<li><a href="#">Developement</a></li>
-							<li><a href="#">Social Media</a></li>
-							<li><a href="#">Press</a></li>
-							<li><a href="#">Events & Lifestyle</a></li>
-							<li><a href="#">Uncategorizes</a></li>
-						</ul>
-					</div>
-					<div class="sb-widget-item">
-						<h4 class="sb-w-title">Archives</h4>
-						<ul>
-							<li><a href="#">February 2018</a></li>
-							<li><a href="#">March 2018</a></li>
-							<li><a href="#">April 2018</a></li>
-							<li><a href="#">May 2018</a></li>
-							<li><a href="#">June 2018</a></li>
-						</ul>
-					</div>
-					<div class="sb-widget-item">
-						<h4 class="sb-w-title">Archives</h4>
-						<div class="tags">
-							<a href="#">education</a>
-							<a href="#">courses</a>
-							<a href="#">development</a>
-							<a href="#">design</a>
-							<a href="#">on line courses</a>
-							<a href="#">wp</a>
-							<a href="#">html5</a>
-							<a href="#">music</a>
-						</div>
-					</div>
-					<div class="sb-widget-item">
-						<div class="add">
-							<a href="#"><img src="img/add.jpg" alt=""></a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+
 	<!-- Page end -->
 
 
 	<!-- banner section -->
-	<section class="banner-section spad">
-		<div class="container">
-			<div class="section-title mb-0 pb-2">
-				<h2>Join Our Community Now!</h2>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris scelerisque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
-			</div>
-			<div class="text-center pt-5">
-				<a href="#" class="site-btn">Register Now</a>
-			</div>
-		</div>
-	</section>
+
 	<!-- banner section end -->
 
 
 	<!-- footer section -->
 	<footer class="footer-section spad pb-0">
+        <div class="container orders" id="students">
+
+        </div>
 		<div class="footer-top">
 			<div class="footer-warp">
-				<div class="row">
+				<div class="row rows">
 					<div class="widget-item">
 						<h4>Contact Info</h4>
 						<ul class="contact-list">
@@ -464,6 +356,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 
 	<!--====== Javascripts & Jquery ======-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="http://code.jquery.com/jquery.min.js"></script>
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -473,7 +367,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="js/main.js"></script>
 	<script src="js/moment.js"></script>
 	<script src="js/jquery.eventCalendar.js"></script>
-    <script src="js/custom.js"></script>
+    <!--<script src="js/custom.js"></script>-->
 	<script src="js/teacher.js"></script>
 </body>
 </html>

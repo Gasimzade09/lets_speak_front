@@ -20,8 +20,78 @@
 	margin-left:75px;
 }
 
+
+
+
 .footer-bottom{
 	margin-left:75px;
+}
+
+.footer-top{
+	padding-top: 100px;
+}
+
+.button-plus{
+	size: 20px;
+	margin-left: 5px;
+	border-radius: 6px;
+}
+
+p.list-title{
+	color:white;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+p.black{
+    color:black;
+}
+
+.logotype{
+    margin-left:55px;
+}
+
+.mine{
+    padding-right:19px;
+}
+
+.mine1{
+	padding-right:46px;
+}
+
+.mine2{
+	padding-right:25px;
+}
+
+.mine3{
+	padding-right:54px;
+}
+
+.flex-nowrap{
+    padding-top:5px;
+}
+
+.add{
+	text-decoration: none;
+	color: white;
+	font-size: 12pt;
+
+}
+
+.add:hover{
+	text-decoration: none;
+	color: white;
+}
+
+.free-time{
+	margin-left: 5px;
+	float:left;
+	width: 100px;
+}
+
+.free{
+	width:60%;
+	float: left;
 }
 
 .search-section{
@@ -557,11 +627,10 @@ ol {
 
 .course-item {
 	margin-bottom: 30px;
+	background-color: #edf4f6;
 }
 
-.course-item .course-thumb {
-	height: 270px;
-}
+
 
 .course-item .course-thumb .price {
 	font-size: 14px;
@@ -744,9 +813,18 @@ ol {
 .contact-form textarea:focus {
 	border-bottom: 2px solid #d82a4e;
 }
-
+#profile{
+    margin-left:10px;
+}
 .signup-form input[type=file],
 .contact-form input[type=file] {
+	display: none;
+}
+
+
+
+
+.freeDate{
 	display: none;
 }
 
@@ -787,12 +865,26 @@ ol {
 
 .footer-section {
 	border-top: 3px solid #d82a4e;
+	margin-left:80px;
 }
+
+/*.taskUpload{
+	display: none
+}*/
 
 .footer-warp {
 	max-width: 1559px;
 	padding: 0 15px;
 	margin: 0 auto;
+}
+
+.icon-admin{
+	margin-top:20px;
+}
+
+.task-name{
+	width:340px;
+	margin-bottom:5px;
 }
 
 .widget-item {
