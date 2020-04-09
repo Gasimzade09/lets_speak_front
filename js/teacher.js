@@ -35,8 +35,12 @@ $(function () {
 
 async function profile() {
     if(localStorage.getItem('token') !== undefined && localStorage.getItem('token') !== null) {
+<<<<<<< HEAD
         let studentId = localStorage.getItem('studentId')
         await fetch(localStorage.getItem('baseurl')+'/teacher/get/'+localStorage.getItem('privateId'),{
+=======
+        await fetch(localStorage.getItem('baseurl')+'/get/user/id/'+localStorage.getItem('privateId')+'/ROLE_TEACHER',{
+>>>>>>> 1d130f1bff04b54d264cd6f5378ca585ec7383a3
             headers: {
                 'Content-Type': 'application/json',
                 'X-Auth-Token': localStorage.getItem('token')
@@ -49,7 +53,13 @@ async function profile() {
             );
         let photo = "/lets_speak-front/img/nobody_m.original.jpg";
         if(teacher.photo !== undefined){
+<<<<<<< HEAD
             photo = "http://locahost:8080"+teacher.photo;
+=======
+            console.log(teacher.photo)
+            photo = "http://localhost:8080"+teacher.photo;
+            console.log(photo)
+>>>>>>> 1d130f1bff04b54d264cd6f5378ca585ec7383a3
         }
         taskBody.innerHTML = "";
         document.getElementById("profile").innerHTML = "";
@@ -81,6 +91,7 @@ async function profile() {
 
             '<div class="col-sm-5 col-xs-6 tital">Last Name:</div>' +
             '<div class="col-sm-7">'+teacher.surname+'</div>'+
+<<<<<<< HEAD
 
             '<div class="clearfix"></div>'+
             '<div class="bot-border"></div>'+
@@ -127,6 +138,54 @@ $(function() {
     });
 });
 
+=======
+
+            '<div class="clearfix"></div>'+
+            '<div class="bot-border"></div>'+
+
+            '<div class="col-sm-5 col-xs-6 tital">Date Of Birth:</div>' +
+            '<div class="col-sm-7">'+teacher.birthDate+'</div>'+
+
+            '<div class="clearfix"></div>'+
+            '<div class="bot-border"></div>'+
+
+            '<div class="col-sm-5 col-xs-6 tital">Phone number:</div>' +
+            '<div class="col-sm-7">'+teacher.phoneNumber+'</div>'+
+
+            '<div class="clearfix"></div>'+
+            '<div class="bot-border"></div>'+
+
+            '<div class="col-sm-5 col-xs-6 tital">Email:</div>' +
+            '<div class="col-sm-9">'+teacher.email+'</div>'+
+
+            '<div class="clearfix"></div>'+
+            '<div class="bot-border"></div>'+
+
+            '<div class="col-sm-5 col-xs-6 tital">Skype:</div>' +
+            '<div class="col-sm-8">'+teacher.skype+'</div>'+
+
+            '<div class="clearfix"></div>'+
+            '<div class="bot-border"></div>'+
+
+            '<div class="col-sm-5 col-xs-6 tital">Password:</div>' +
+            '<div class="col-sm-12"><input type="button" class="btn btn-danger btn-sm" onclick="changePassword()" value="Change password"> </div>'+
+            '<div class="clearfix"></div>'+
+            '<div class="bot-border"></div>'+
+            '</div>'+
+            '</div>'+
+            '</div>'+
+            '</div>'+
+            '</div>'+
+            '</div>';
+    }
+};
+$(function() {
+    $('#profile-image1').on('click', function() {
+        $('#profile-image-upload').click();
+    });
+});
+
+>>>>>>> 1d130f1bff04b54d264cd6f5378ca585ec7383a3
 async function changePassword() {
     var cPassword;
     const wrapper = document.createElement('div');
@@ -183,6 +242,7 @@ function setRank(id){
         '<option value="15.0">Set 15.0</option>\n' +
         '</select>\n' +
         '</div>';
+<<<<<<< HEAD
 
     swal({
         title: 'Set rank for student',
@@ -190,6 +250,15 @@ function setRank(id){
         content: wrapper,
         button: 'SET',
 
+=======
+
+    swal({
+        title: 'Set rank for student',
+        text: 'Choose rank from select',
+        content: wrapper,
+        button: 'SET',
+
+>>>>>>> 1d130f1bff04b54d264cd6f5378ca585ec7383a3
     }).then(function () {
         fetch(localStorage.getItem('baseurl')+'/set/student/rank/'+id+'/'+document.getElementById("rank").value,{
             method: 'POST',
@@ -197,6 +266,11 @@ function setRank(id){
                 'Content-Type': 'application/json',
                 'X-Auth-Token': localStorage.getItem('token')
             }
+<<<<<<< HEAD
+=======
+        }).catch(function (err) {
+            console.log(err);
+>>>>>>> 1d130f1bff04b54d264cd6f5378ca585ec7383a3
         }).then(getStudentList);
     })
 }
@@ -239,6 +313,10 @@ async function getStudentList() {
         '<th scope="col">Email</th>\n' +
         '<th scope="col">Rank</th>\n' +
         '<th scope="col">Set rank</th>\n' +
+<<<<<<< HEAD
+=======
+        '<th scope="col">Set task</th>\n' +
+>>>>>>> 1d130f1bff04b54d264cd6f5378ca585ec7383a3
         '</tr>\n' +
         '</thead>\n' +
         '<tbody>\n' +
@@ -252,17 +330,102 @@ async function getStudentList() {
             '<td>'+student.email+'</td>\n'+
             '<td>'+student.rank+'</td>\n'+
             '<td><button onclick="setRank('+student.id+')" class="btn btn-primary" type="button" value="Buy">Set rank</button></td>\n'+
+<<<<<<< HEAD
+=======
+            '<td><label for="v-upload" class="btn btn-primary" onclick="setTaskForm('+student.id+')" id="upload">Upload task</label>' +
+            '</td>'+
+>>>>>>> 1d130f1bff04b54d264cd6f5378ca585ec7383a3
             '</tr>\n';
         i++;
+
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1d130f1bff04b54d264cd6f5378ca585ec7383a3
     console.log("out of for each");
     innerHtml +=
         '</tbody>'+
         '</table>';
     document.getElementById("students").innerHTML = innerHtml;
+<<<<<<< HEAD
 
 }
 
+
+function logoutButton() {
+    Login.innerHTML = "";
+    Login.innerHTML = '<a href="index.html"><button class="site-btn header-btn" id="logout" onclick="deleteToken()">Logout</button></a>';
+
+    // noinspection JSAnnotator
+    //document.getElementById("logout").onclick = logOut();
+}
+
+async function deleteToken(){
+    token = null;
+    fetch(baseUrl + "/delete/token/"+localStorage.getItem('username'),{
+        method:'POST'
+    })
+    localStorage.clear();
+}
+
+
+
+async function onLoadFunctions(){
+    if (localStorage.getItem('token') === null || localStorage.getItem('userRole') !== 'ROLE_TEACHER'){
+        window.location.href = "http://localhost:63342/lets_speak-front/index.html";
+    }
+=======
+
+}
+
+var baseUrl = 'http://localhost:8080/api';
+
+
+
+
+
+
+
+
+function setTaskForm(studentId) {
+    Swal.fire({
+        title: '<strong>HTML <u>example</u></strong>',
+        type: 'info',
+        html:
+            '<input type="text" name="task-name" placeholder="Task name" id="task-name" required class="task-name">' +
+            '<input type="file" name="task-upload" id="taskUpload">',
+        showCloseButton: true,
+        showCancelButton: true,
+        focusConfirm: false,
+        confirmButtonText:
+            '<i class="fas fa-file-upload" onclick="uploadTask('+studentId+')"></i> Upload!',
+        confirmButtonAriaLabel: 'Thumbs up, great!',
+        cancelButtonText:
+            '<i class="fa fa-thumbs-down"></i>',
+        cancelButtonAriaLabel: 'Thumbs down',
+    })
+>>>>>>> 1d130f1bff04b54d264cd6f5378ca585ec7383a3
+}
+window.onload = onLoadFunctions();
+
+
+function uploadTask(studentId) {
+    var task = document.getElementById("taskUpload").value;
+    var myFormData = new FormData();
+    myFormData.append('file', jQuery('#taskUpload')[0].files[0]);
+
+    $.ajax({
+        url: baseUrl + '/upload/task/'+studentId+'/'+teacherId+'/'+document.getElementById("task-name").value,
+        type: 'POST',
+        enctype: 'multipart/form-data',
+        cache: false,
+        processData: false, // important
+        contentType: false, // important
+        dataType : 'json',
+        data: myFormData
+    });
+}
 
 function logoutButton() {
     Login.innerHTML = "";

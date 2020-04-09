@@ -221,6 +221,11 @@ function regStudent(){
         uSkype = document.getElementById("uSkype").value;
         signUp(uName, uPass, uEmail, uSurname, uSkype);
     })
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 1d130f1bff04b54d264cd6f5378ca585ec7383a3
 }
 
 function loginButton() {
@@ -321,7 +326,7 @@ async function signUp(uName, uPass, uEmail, uSurname, uSkype) {
     }
     let url = "/reg/student";
 
-    console.log(username + " " + birthDate)
+    //console.log(username + " " + birthDate)
     await fetch(baseUrl + url, {
         method: "POST",
         headers: {

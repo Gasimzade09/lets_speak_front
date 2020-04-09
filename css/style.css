@@ -868,10 +868,23 @@ ol {
 	margin-left:80px;
 }
 
+/*.taskUpload{
+	display: none
+}*/
+
 .footer-warp {
 	max-width: 1559px;
 	padding: 0 15px;
 	margin: 0 auto;
+}
+
+.icon-admin{
+	margin-top:20px;
+}
+
+.task-name{
+	width:340px;
+	margin-bottom:5px;
 }
 
 .widget-item {

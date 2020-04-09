@@ -248,8 +248,13 @@ async function getOrders(){
         '<tr>' +
         '<th scope="col">#</th>\n' +
         '<th scope="col">Order name</th>\n' +
+<<<<<<< HEAD
         '<th scope="col">tariff name</th>\n' +
         '<th scope="col">teacher name</th>\n' +
+=======
+        '<th scope="col">Tariff name</th>\n' +
+        '<th scope="col">Teacher name</th>\n' +
+>>>>>>> 1d130f1bff04b54d264cd6f5378ca585ec7383a3
         '<th scope="col">Price</th>\n' +
         '</tr>\n' +
         '</thead>\n' +
@@ -262,7 +267,11 @@ async function getOrders(){
             '<td>'+order.tariffName+'</td>\n'+
             '<td>'+order.teacherName+'</td>\n'+
             '<td>'+order.price+' AZN</td>\n'+
+<<<<<<< HEAD
             '</tr>\n'
+=======
+            '</tr>\n';
+>>>>>>> 1d130f1bff04b54d264cd6f5378ca585ec7383a3
         i++;
     }
     ordersHtml += '</tbody>'+
