@@ -14,20 +14,34 @@
 	<link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,500,500i,600,600i,700,700i,800,800i" rel="stylesheet">
 
 	<!-- Stylesheets -->
+
 	<link rel="stylesheet" href="css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="css/font-awesome.min.css"/>
 	<link rel="stylesheet" href="css/owl.carousel.css"/>
-	<link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/left_menu.css"/>
 	<link rel="stylesheet" href="css/eventCalendar.css"/>
 	<link rel="stylesheet" href="css/eventCalendar_theme_responsive.css"/>
-
+    <link rel="stylesheet" href="css/style.css"/>
 
 	<!--[if lt IE 9]>
 	  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+    <style type="text/css">
+        input.hidden {
+            position: absolute;
+            left: -9999px;
+        }
 
+        #profile-image1 {
+            cursor: pointer;
+            width: 100px;
+            height: 100px;
+            border:2px solid #03b1ce ;
+        }
+        .tital{ font-size:16px; font-weight:500; float: left;}
+        .bot-border{ border-bottom:1px #f8f8f8 solid;  margin:5px 0  5px 0;}
+    </style>
 </head>
 <body>
 
@@ -37,6 +51,32 @@
 		<div class="loader"></div>
 	</div>
 
+    <!-- Modal window -->
+
+    <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" id="buyTariffInputs">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-5">
+                        <div class="input-group mb-12">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button class="btn btn-default" onclick="setOrder()">buy</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal window end -->
 
 	<!-- Header section -->
 	<header class="header-section">
@@ -44,14 +84,16 @@
 			<div class="row">
 				<div class="col-lg-3 col-md-3">
 					<div class="site-logo">
-						<img src="img/logo.png" alt="">
+						<img class="logotype" src="img/logo.png" alt="">
 					</div>
 					<div class="nav-switch">
 						<i class="fa fa-bars"></i>
 					</div>
 				</div>
 				<div class="col-lg-9 col-md-9">
+                    <div id="login">
 
+                    </div>
 					<nav class="main-menu">
 						<ul>
 							<li><a href="index.html">Home</a></li>
@@ -66,6 +108,8 @@
 		</div>
 	</header>
 	<!-- Header section end -->
+
+
 
     <!-- left menu -->
 
@@ -89,49 +133,49 @@
                         <a class="menu-item" href="student.html" onclick="getDates()">
                             <svg class="icon icon-fly"><use xlink:href="#icon-fly"></use></svg>
                             <div class="menu-text">
-                                Strategy
+                                Schedule
                             </div>
                         </a>
                     </div>
                     <div class="item">
-                        <a class="menu-item" href="#team" onclick=getTasks()><svg class="icon icon-man"><use xlink:href="#icon-man" ></use></svg>
+                        <a class="menu-item" href="#team" id="items-li"><svg class="icon icon-man"><use xlink:href="#icon-man" ></use></svg>
                             <div class="menu-text">
-                                Team
+                                Profile
                             </div>
                         </a>
                     </div>
-                    <div class="item">
+                    <div class="item" onclick=getPriceList()>
                         <div class="menu-item">
                             <svg class="icon icon-info"><use xlink:href="#icon-info"></use></svg>
                             <div class="menu-text">
-                                About
+                                Tariff list
                             </div>
                         </div>
                     </div>
-                    <div class="item" onclick="getTasks()">
-                        <a class="menu-item"  id="items-li" href="#Testimonials">
+                    <!--<div class="item" onclick=getTasks()>
+                        <a class="menu-item" href="#Testimonials">
                             <svg class="icon icon-star"><use xlink:href="#icon-star"></use></svg>
                             <div class="menu-text">
-                                Testimonials
+                                Tasks
                             </div>
                         </a>
-                    </div>
-                    <div class="item">
+                    </div>-->
+                    <div class="item" onclick="getOrders()">
                         <div class="menu-item">
                             <svg class="icon icon-doc-menu"><use xlink:href="#icon-doc-menu"></use></svg>
                             <div class="menu-text">
-                                Odd Ends
+                                Order lists
                             </div>
                         </div>
                     </div>
-                    <div class="item item-footer">
+                    <!--<div class="item item-footer">
                         <div class="menu-item">
                             <svg class="icon icon-email-menu"><use xlink:href="#icon-email"></use></svg>
                             <div class="menu-text">
                                 Info
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
@@ -228,18 +272,17 @@
 	<div class="page-info-section set-bg" data-setbg="img/page-bg/3.jpg">
 
 	</div>
+
 	<!-- Page info end -->
 
 
 	<!-- search section -->
 	<section class="search-section ss-other-page">
-		<div class="container">
+		<div class="container" id="profile">
 			<div id="eventCalendar">
 				
 			</div>
-            <div class="row" id="task_body">
 
-            </div>
 		</div>
 	</section>
 	<!-- search section end -->
@@ -250,7 +293,9 @@
 
     </div>
 
+    <div class="container tasks" id="task_body">
 
+    </div>
 	<!-- Page  -->
 
 
@@ -264,6 +309,9 @@
 
 	<!-- footer section -->
 	<footer class="footer-section spad pb-0">
+        <div class="container orders" id="orders">
+
+        </div>
 		<div class="footer-top">
 			<div class="footer-warp">
 				<div class="row rows">
@@ -333,6 +381,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 
 	<!--====== Javascripts & Jquery ======-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="http://code.jquery.com/jquery.min.js"></script>
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -341,48 +390,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="js/owl.carousel.min.js"></script>
 	<script src="js/main.js"></script>
 	<script src="js/moment.js"></script>
-	<script src="js/jquery.eventCalendar.js"></script>
     <script src="js/custom.js"></script>
+	<script src="js/jquery.eventCalendar.js"></script>
 	<script src="js/student.js"></script>
-	<script>
-        let obj = [];
-        let student;
-        async function getDates() {
-            token = localStorage.getItem('token')
-            await fetch(localStorage.getItem('baseurl')+'/get/schedules/'+localStorage.getItem('studentId'),{
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Auth-Token': localStorage.getItem('token')
-                }
-            })
-                .then(r => r.json())
-                .then(json => {
-                        datas = json;
-                    }
-                );
-            for(var data of datas){
-                obj.push({"date":data.date + " " + data.time, "title":data.teacherName, "description":"desc", "url":""})
-            }
-            console.log(data.date);
-        }
-
-        $(function () {
-            $('#eventCalendar').eventCalendar({
-                jsonData: obj,
-                jsonDateFormat: 'human',
-                dateFormat: 'YYYY-MM-DD dddd'
-            });
-
-        })
-
-        //if(localStorage.getItem('token') !== undefined && localStorage.getItem('token') !== null){
-            window.onload = getStudentId();
-            window.onload = getDates();
-        //}
-
-
-	</script>
-
 </body>
 </html>

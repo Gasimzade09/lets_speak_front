@@ -1,7 +1,8 @@
 
 var expanded = false;
 var token;
-
+var userRole;
+var privateId;
 let tableBody = document.getElementById("table_body");
 let Login = document.getElementById("login");
 // let showLogout = document.getElementById("show-logout");
@@ -18,22 +19,33 @@ async function signIn() {
             username: username,
             password: password
         })
-    }).then(function (response) {
+    }).then(async function (response) {
         response.json()
-            .then(function (_data) {
+            .then(await function (_data) {
                 token = _data.token;
-                localStorage.setItem('username', username)
-                console.log("tok: " + token)
-                localStorage.setItem('token', token)
+                userRole = _data.userRole;
+                privateId = _data.privateId;
+                localStorage.setItem('username', username);
+                localStorage.setItem('privateId', privateId);
+                console.log("tok: " + token);
+                console.log(userRole);
+                localStorage.setItem('token', token);
+                localStorage.setItem('userRole', userRole);
                 token = localStorage.getItem('token')
-            }).then(function () {
-            fetch(baseUrl + "/set/user/token/"+username+"/"+token,{
-                method: "POST"
-            })
-        });
-    })
+            }).then(redirect)
+    });
     //logoutButton()
-    console.log("token: " + token + " username:  " + localStorage.getItem('username'))
+    console.log("token: " + localStorage.getItem('token') + " username:  " + localStorage.getItem('username'));
+}
+
+function redirect(){
+    console.log(privateId);
+    //localStorage.setItem('privateId', privateId);
+    if (userRole === 'ROLE_STUDENT'){
+        window.location.href = "http://localhost:63342/lets_speak-front/student.html";
+    }else if(userRole === 'ROLE_TEACHER'){
+        window.location.href = "http://localhost:63342/lets_speak-front/teacher.html";
+    }
 }
 
 
@@ -65,6 +77,36 @@ async function getCourseList() {
 };
 
 
+async function getTariffList(){
+    let tariffArray = {};
+    await fetch('http://localhost:8080/api/get/tariffs')
+        .then(r => r.json())
+        .then(json => {
+                tariffArray = json
+            }
+        );
+    for (let tariff of tariffArray){
+        var foundPos = tariff.name.indexOf(" ", 0);
+        let desc = tariff.name.substr(0, (foundPos+1)).toLowerCase();
+        console.log(desc);
+        document.getElementById("tariff-list").innerHTML += '<div class="mix col-lg-3 col-md-4 col-sm-6 '+desc+'">\n' +
+            '<div class="course-item">\n' +
+                '<div class="course-thumb set-bg" data-setbg="img/courses/1.jpg">\n' +
+                    '<div class="price">Price:'+ tariff.price +'</div>\n' +
+                '</div>\n' +
+                '<div class="course-info">\n' +
+                    '<div class="course-text">\n' +
+                        '<h5>'+tariff.name+'</h5>\n' +
+                        '<p>'+tariff.count+' Lessons '+tariff.timesAWeek+' days per week</p>\n' +
+                        '<div class="students">lesson duration: '+tariff.duration+'</div>\n' +
+                    '</div>\n' +
+                '</div>\n' +
+            '</div>\n' +
+            '</div>\n';
+    }
+};
+
+
 $(document).ready(function () {
 
     $("#submitButton").click(function (event) {
@@ -80,18 +122,22 @@ $(document).ready(function () {
     //loginButton();
 });
 
-function ajaxSubmitForm() {
+
+
+async function ajaxSubmitForm() {
+    let email = document.getElementById("tEmail").value;
+    let name = document.getElementById("tName").value;
+    let surname = document.getElementById("tSurname").value;
     var data = new FormData();
-    data.append('file', jQuery('#fileUploadForm')[0].files[0]);
+    data.append('file', jQuery('#v-upload')[0].files[0]);
     $("#submitButton").prop("disabled", true);
 
     $.ajax({
-        url: 'http://localhost:8080/upload/3',
+        url: 'http://localhost:8080/api/reg/teacher/'+email+'/'+name+'/'+surname,
         type: 'POST',
         method: 'POST',
         enctype: 'multipart/form-data',
         data: data,
-
         // prevent jQuery from automatically transforming the data into a query string
         processData: false,
         contentType: false,
@@ -101,11 +147,9 @@ function ajaxSubmitForm() {
 
             $("#result").html(data);
             console.log("SUCCESS : ", data);
-            console.log(document.getElementById("three").value)
-            console.log(document.getElementById("wFromTime").value)
-            console.log(document.getElementById("wToTime").value)
+
             $("#submitButton").prop("disabled", false);
-            $('#fileUploadForm')[0].reset;
+            $('#v-upload')[0].reset;
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#result").html(jqXHR.responseText);
@@ -114,11 +158,75 @@ function ajaxSubmitForm() {
         }
     });
 }
+var uName;
+var uPass;
+var uEmail;
+var uSurname;
+var uSkype;
+function regStudent(){
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML =
+        /*Username*/
+        '<div class="input-group flex-nowrap">\n' +
+        '<div class="input-group-prepend">\n' +
+        '<span class="input-group-text" id="addon-wrapping">Username *</span>\n' +
+        '</div>\n' +
+        '<input required type="text" id="uEmail" name="email" class="form-control" placeholder="Email" aria-label="Username" aria-describedby="addon-wrapping">\n' +
+        '</div>'+
+
+        /*Password*/
+
+        '<div class="input-group flex-nowrap">\n' +
+        '<div class="input-group-prepend">\n' +
+        '<span class="input-group-text mine" id="addon-wrapping">Password *</span>\n' +
+        '</div>\n'+
+        '<input required type="password" id="uPass" class="form-control" name="pass" placeholder="Password" aria-label="Username" aria-describedby="addon-wrapping">\n' +
+        '</div>'+
+
+        /*Name*/
+        '<div class="input-group flex-nowrap">\n' +
+        '<div class="input-group-prepend">\n' +
+        '<span class="input-group-text mine1" id="addon-wrapping">Name *</span>\n' +
+        '</div>\n'+
+        '<input type="name" required class="form-control" id="uName" name="name" placeholder="Name" aria-label="Name" aria-describedby="addon-wrapping">\n' +
+        '</div>'+
+
+        /*Surname*/
+        '<div class="input-group flex-nowrap">\n' +
+        '<div class="input-group-prepend">\n' +
+        '<span class="input-group-text mine2" id="addon-wrapping">Surname *</span>\n' +
+        '</div>\n'+
+        '<input type="surname" required id="uSurname" class="form-control" name="surname" placeholder="Surname" aria-label="Surname" aria-describedby="addon-wrapping">\n' +
+        '</div>'+
+
+        /*Skype*/
+        '<div class="input-group flex-nowrap">\n' +
+        '<div class="input-group-prepend">\n' +
+        '<span class="input-group-text mine3" id="addon-wrapping">Skype</span>\n' +
+        '</div>\n'+
+        '<input type="skype" class="form-control" id="uSkype" name="skype" placeholder="Skype" aria-label="Skype" aria-describedby="addon-wrapping">\n' +
+        '</div>';
+
+    swal({
+        title: 'Registration for student',
+        text: 'Please fill in all fields.',
+        content: wrapper,
+        button: 'SET',
+
+    }).then(value => {
+        uName = document.getElementById("uName").value;
+        uPass = document.getElementById("uPass").value;
+        uEmail = document.getElementById("uEmail").value;
+        uSurname= document.getElementById("uSurname").value;
+        uSkype = document.getElementById("uSkype").value;
+        signUp(uName, uPass, uEmail, uSurname, uSkype);
+    })
+}
 
 function loginButton() {
     console.log(token);
     Login.innerHTML = "";
-    Login.innerHTML = '<button class="site-btn header-btn" id="login" >Login or Sign up</button>';
+    Login.innerHTML = '<button class="site-btn header-btn" id="login" >Sign in</button>';
     document.getElementById("login").onclick = function () {
         modal.style.display = "block";
     }
@@ -134,6 +242,9 @@ function logoutButton() {
 
 async function deleteToken(){
     token = null;
+    fetch(baseUrl + "/delete/token/"+localStorage.getItem('username'),{
+        method:'POST'
+    })
     localStorage.clear();
 }
 
@@ -157,12 +268,12 @@ async function logOut() {
 
 function onLoadWindow(){
     if (localStorage.getItem('token') == null){
-        console.log("null")
+        console.log("null");
         loginButton();
     }else
         logoutButton();
 }
-
+window.onload = getTariffList();
 window.onload = getCourseList();
 window.onload = onLoadWindow();
 
@@ -189,28 +300,25 @@ window.onclick = function (event) {
     }
 }
 
-function showCheckboxes() {
-    var checkboxes = document.getElementById("checkboxes");
-    if (!expanded) {
-        checkboxes.style.display = "block";
-        expanded = true;
-    } else {
-        checkboxes.style.display = "none";
-        expanded = false;
-    }
-}
 
-async function signUp() {
+async function signUp(uName, uPass, uEmail, uSurname, uSkype) {
+    let skype;
+    var username;
+    var password;
+    let name;
+    let surname;
     let user;
-    var username = document.getElementById("regUsername").value;
-    var password = document.getElementById("regPassword").value;
-    let name = document.getElementById("name").value;
-    let surname = document.getElementById("surname").value;
-    let phoneNumber = document.getElementById("phoneNumber").value;
-    let skype = document.getElementById("skype").value;
-    let birthDate = document.getElementById("birthDate").value;
-    let freeDate = document.getElementById("freeDate").value;
-    let freeTime = document.getElementById("freeTime").value;
+    if (uEmail === undefined || uPass === undefined|| uName === undefined || uSurname === undefined){
+        alert("Please fill all in all fields, which marked with '*' !")
+    }else {
+        username = uEmail;
+        password = uPass;
+        name = uName;
+        surname = uSurname;
+    }
+    if (skype !== ''){
+        skype = uSkype;
+    }
     let url = "/reg/student";
 
     console.log(username + " " + birthDate)
@@ -224,9 +332,9 @@ async function signUp() {
             password: password,
             name: name,
             surname: surname,
-            phoneNumber: phoneNumber,
+            phoneNumber: null,
             skype: skype,
-            birthDate: birthDate,
+            birthDate: "1989-06-24",
             rank: null,
             teacherName: null,
             lessons: null
@@ -238,6 +346,3 @@ async function signUp() {
             })
     })
 }
-
-
-
